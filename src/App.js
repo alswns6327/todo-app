@@ -3,28 +3,23 @@ import TodoInsert from "./components/TodoInsert";
 import TodoList from "./components/TodoList";
 import TodoTemplate from "./components/TodoTemplate";
 
+function createBulkTodos(){
+  const array = [];
+  for(let i=1 ; i<= 4500; i++){
+    array.push({
+      id: i,
+      text: `할 일 ${i}`,
+      checked: false,
+    });
+  }
+  return array;
+}
 
 function App() {
 
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: '리액트의 기초 알아보기',
-      checked: true,
-    },
-    {
-      id: 2,
-      text: '컴포넌트 스타일링 해보기',
-      checked: true,
-    },
-    {
-      id: 3,
-      text: '배고파 햄버거 먹을래',
-      checked: false,
-    },
-  ])
+  const [todos, setTodos] = useState(createBulkTodos)
 
-  const nextId = useRef(4);
+  const nextId = useRef(4501);
 
   const onInsert = useCallback(
     text => {
@@ -33,25 +28,25 @@ function App() {
         text,
         checked: false
       }
-      setTodos(todos.concat(todo));
+      setTodos(todos => todos.concat(todo));
     },
-    [todos],
+    [],
   )
 
   const onRemove = useCallback(
     id => {
-      setTodos(todos.filter(todo => todo.id != id));
+      setTodos(todos=>todos.filter(todo => todo.id != id));
     },
-    [todos],
+    [],
   );
 
   const onToggle = useCallback(
     id => {
-      setTodos(
+      setTodos(todos=>
         todos.map(todo => todo.id === id ? {...todo, checked: !todo.checked} : todo)
       );
     },
-    [todos],
+    [],
   );
 
   return (
